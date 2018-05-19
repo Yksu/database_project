@@ -1,0 +1,36 @@
+{% extends "library/base.html" %}
+
+
+{% block title %}
+Recommend a book
+{% endblock %}
+{% block content %}
+
+
+<h2 id="page-title">Recommend {{ book.title }} to a friend</h2>
+
+
+
+<div id="data_content">
+  {% if status == 0 %}
+    <form action="{% url 'library:recommend_book' bookid=book.pk %}" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Send">
+    </form>
+  {% endif %}
+  {% if status == 1 %}
+    The recommendation has been sent!
+  {% endif %}
+  {% if status == 2 %}
+    The recommendation couldn't be sent. Either you don't own this book or this user is not in your friends.
+  {% endif %}
+  {% if status == 3 %}
+    You don't have any friends you can recommend this book too.
+    <br><br>Maybe they already own the book or you have already recommended it to them.
+  {% endif %}
+
+  <p><a href="{% url 'library:bookdetails' bookid=book.pk %}">Go back to the library</a></p>
+</div>
+
+{% endblock %}

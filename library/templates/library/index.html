@@ -1,0 +1,66 @@
+{% extends "library/base.html" %}
+
+
+{% block title %}Library{% endblock %}
+
+{% block content %}
+
+<h2 id="page-title">Library</h2>
+
+{% if latest_books_list %}
+  <ul id="books">
+  {% for book, rating, nb_ratings in latest_books_list %}
+      <li>
+        <div class="book">
+          <a href="{% url 'library:bookdetails' bookid=book.pk %}">
+            <img class="cover" src="{{ book.image_url }}" alt="Cover of {{ book.title }}"/>
+          </a>
+          <span class="title"><a href="{% url 'library:bookdetails' bookid=book.pk %}">{{ book.title }}</a></span>
+            {% if book.author.username %}
+              <span class="author"><a href="{% url 'library:profile' user=book.author.username %}">{{ book.author_pseudonym }}</a></span>
+            {% else %}
+              <span class="author">{{ book.author_pseudonym }}</span>
+            {% endif %}
+          <span class="price">${{book.price}}</span>
+          {% if rating > 0 %}
+            <span class="rating">Rated {{ rating }}/5 ({{ nb_ratings }} evaluation{% if nb_ratings > 1 %}s{% endif %})</span>
+          {% else %}
+            <span class="rating">Not rated</span>
+          {% endif %}
+        </div>
+        <div style="clear:both;"></div>
+      </li>
+  {% endfor %}
+  </ul>
+
+  <div style="clear:both;"></div>
+  <p id="displayed-data">
+    Displaying <b>{{ nb_books_displayed }}</b> out of <b>{{ nb_books }}</b> books
+    (books {{ first_displayed }} to {{ last_displayed }})
+  </p>
+
+  <div id="nav">
+    {% if page != 1 %}
+      <a href="{% url 'library:index' 1 %}">&#10094;&#10094;</a>
+      <a href="{% url 'library:index' prev_page %}">&#10094;</a>
+    {% endif %}
+
+    {% for i in page_range %}
+      {% if i != page %}
+        <a href="{% url 'library:index' i %}">{{ i }}</a>
+      {% else %}
+        <span class="selected">{{ i }}</span>
+      {% endif %}
+    {% endfor %}
+
+    {% if page != nb_pages %}
+      <a href="{% url 'library:index' next_page %}">&#10095;</a>
+      <a href="{% url 'library:index' nb_pages %}">&#10095;&#10095;</a>
+    {% endif %}
+  </div>
+
+{% else %}
+    <p>No books are available.</p>
+{% endif %}
+
+{% endblock %}

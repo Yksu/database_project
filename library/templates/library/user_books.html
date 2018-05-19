@@ -1,0 +1,49 @@
+{% extends "library/base.html" %}
+
+
+{% block title %}{{ usr.username }}'s books{% endblock %}
+
+{% block content %}
+
+
+
+<h2 id="page-title">{{ usr.username }}'s books</h2>
+
+
+
+<div id="data_content">
+
+  {% if books %}
+    <ul id="books">
+    {% for book, rating, nb_ratings in books %}
+        <li>
+          <div class="book">
+            <a href="{% url 'library:bookdetails' bookid=book.pk %}">
+              <img class="cover" src="{{ book.image_url }}" alt="Cover of {{ book.title }}"/>
+            </a>
+            <span class="title"><a href="{% url 'library:bookdetails' bookid=book.pk %}">{{ book.title }}</a></span>
+            {% if book.author.username %}
+              <span class="author"><a href="{% url 'library:profile' user=book.author.username %}">{{ book.author_pseudonym }}</a></span>
+            {% else %}
+              <span class="author">{{ book.author_pseudonym }}</span>
+            {% endif %}            <span class="category">{{ book.category }}</span>
+            {% if rating > 0 %}
+            <span class="rating">Rated {{ rating }}/5 ({{ nb_ratings }} evaluation{% if nb_ratings > 1 %}s{% endif %})</span>
+            {% else %}
+              <span style="right:0" class="rating">Not rated</span>
+            {% endif %}
+          </div>
+          <div style="clear:both;"></div>
+        </li>
+    {% endfor %}
+    </ul>
+    <div style="clear:both"></div>
+
+  {% else %}
+      <p>No books to show.</p>
+  {% endif %}
+
+
+</div>
+
+{% endblock %}

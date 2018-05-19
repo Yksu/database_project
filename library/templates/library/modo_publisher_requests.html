@@ -1,0 +1,32 @@
+{% extends "library/base.html" %}
+
+
+{% block title %}Publisher requests{% endblock %}
+
+{% block content %}
+
+
+
+<h2 id="page-title">Publisher requests</h2>
+
+
+
+<div id="data_content">
+
+  {% if requests %}
+    <ul>
+    {% for req in requests %}
+        <li>
+          <a href="{% url 'library:profile' user=req.username %}">{{ req }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+
+  {% else %}
+      <p>No request to show.</p>
+  {% endif %}
+
+
+</div>
+
+{% endblock %}

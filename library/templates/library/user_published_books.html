@@ -1,0 +1,65 @@
+{% extends "library/base.html" %}
+
+
+{% block title %}{{ usr.username }}'s published books{% endblock %}
+
+{% block content %}
+
+
+
+<h2 id="page-title">{{ usr.username }}'s published books</h2>
+
+
+
+<div id="data_content">
+
+  {% if books %}
+    <ul id="books">
+    {% for book, rating, nb_ratings in books %}
+      {% if book.status == 0 or own_profile or user.authorization_level == 4 %}
+        <li>
+          {% if book.status == 2 %}
+            <p><em>This book has been removed.</em></p>
+          {% endif %}
+          {% if book.status == 0 %}
+            {% if user.authorization_level == 4 %}
+              <p>
+                <em>This book is waiting to be approved.</em>
+                <a href="{% url 'library:accept_publication' bookid=book.pk %}">Publish it</a>
+                or <a href="{% url 'library:reject_publication' bookid=book.pk %}">remove it</a>.
+              </p>
+            {% else %}
+              <p><em>You have sent a request to publish this book. A moderator will soon review it.</em></p>
+            {% endif %}
+          {% endif %}
+          <div class="book">
+            <a href="{% url 'library:bookdetails' bookid=book.pk %}">
+              <img class="cover" src="{{ book.image_url }}" alt="Cover of {{ book.title }}"/>
+            </a>
+            <span class="title"><a href="{% url 'library:bookdetails' bookid=book.pk %}">{{ book.title }}</a></span>
+            {% if book.author.username %}
+              <span class="author"><a href="{% url 'library:profile' user=book.author.username %}">{{ book.author_pseudonym }}</a></span>
+            {% else %}
+              <span class="author">{{ book.author_pseudonym }}</span>
+            {% endif %}            <span class="category">{{ book.category }}</span>
+            {% if rating > 0 %}
+            <span class="rating">Rated {{ rating }}/5 ({{ nb_ratings }} evaluation{% if nb_ratings > 1 %}s{% endif %})</span>
+            {% else %}
+              <span style="right:0" class="rating">Not rated</span>
+            {% endif %}
+          </div>
+          <div style="clear:both;"></div>
+        </li>
+      {% endif %}
+    {% endfor %}
+    </ul>
+    <div style="clear:both"></div>
+
+  {% else %}
+      <p>No books to show.</p>
+  {% endif %}
+
+
+</div>
+
+{% endblock %}

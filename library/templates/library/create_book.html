@@ -1,0 +1,18 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Publish a book{% endblock %}
+
+{% block content %}
+
+
+<h2 id="page-title">Publish a book</h2>
+
+
+<div id="data_content">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Publish</button>
+  </form>
+</div>
+{% endblock %}

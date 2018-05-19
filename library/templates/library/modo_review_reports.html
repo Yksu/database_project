@@ -1,0 +1,32 @@
+{% extends "library/base.html" %}
+
+
+{% block title %}Review reports{% endblock %}
+
+{% block content %}
+
+
+
+<h2 id="page-title">Review reports</h2>
+
+
+
+<div id="data_content">
+
+  {% if requests %}
+    <ul>
+    {% for req in requests %}
+        <li>
+          <a href="{% url 'library:review_details' reviewid=req.pk bookid=req.associated_rating.book.pk %}">{{ req }}, <b>{{ req.nb_reports }} reports</b></a>
+        </li>
+    {% endfor %}
+    </ul>
+
+  {% else %}
+      <p>No report to show.</p>
+  {% endif %}
+
+
+</div>
+
+{% endblock %}

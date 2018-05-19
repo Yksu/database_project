@@ -1,0 +1,297 @@
+@font-face {
+    font-family: 'Leaf';
+    src: url('leaf1.ttf'); /* https://www.dafont.com/theme.php?cat=204 */
+}
+@font-face {
+    font-family: 'QuickSand';
+    src: url('quicksand.otf'); /* https://www.dafont.com/theme.php?cat=204 */
+}
+@font-face {
+    font-family: 'BookWorm';
+    src: url('bookworm.ttf'); /* https://www.dafont.com/theme.php?cat=204 */
+}
+
+/* #112D4E #3F72AF #DBE2EF #F9F7F7 http://colorhunt.co/c/22272 */
+
+/**
+* GENERAL
+**/
+
+html, body {
+  font-family: 'QuickSand';
+  color: #112D4E;
+  background-color: #DBE2EF;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+}
+
+a {
+  text-decoration: none;
+  color: #112D4E;
+}
+
+
+/**
+* HEADER
+**/
+
+header {
+  background-color: #F9F7F7;
+  margin: 0;
+  text-align: center;
+  border-bottom: 1px solid #112D4E;
+  color: #3F72AF;
+  padding: 20px;
+}
+
+header a {
+  color: #3F72AF;
+  margin: 5px;
+}
+
+header h1 {
+  font-family: 'Leaf';
+  font-size: 92px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #3F72AF;
+  margin: 0;
+}
+
+#links, #links a {
+  font-size: 17px;
+  margin: 10px 0 0 0;
+  color: #3F72AF;
+}
+
+#links span, #links a {
+  margin: 5px;
+}
+
+#links a:hover {
+  color: #112D4E;
+}
+
+
+/**
+* BODY
+**/
+
+#content {
+  padding: 0 0 10px 0;
+}
+
+#page-title {
+  font-family: 'BookWorm';
+  text-align: left;
+  color: #112D4E;
+  margin: 10px;
+  padding: 0;
+  font-size: 30px;
+  border-bottom: 1px solid #112D4E;
+}
+
+
+
+#data_content {
+  background-color: #F9F7F7;
+  border: 1px solid #112D4E;
+  color: #3F72AF;
+  margin: 30px;
+  padding: 10px;
+  border-radius: 2px;
+}
+
+#data_content .emph, #data_content form label {
+  color: #112D4E;
+  font-weight: bold;
+}
+
+
+/**
+* FOOTER
+**/
+
+#footer {
+  padding: 10px;
+  border-top: 1px solid #112D4E;
+}
+
+
+
+/**
+* LIBRARY
+**/
+
+
+
+ul#books {
+  list-style-type: none;
+  padding: 0;
+  border-top: 1px solid #112D4E;
+  width: 80%;
+  margin: 30px 0 0 10%;
+}
+
+.book {
+  background-color: #F9F7F7;
+  border-bottom: 1px solid #112D4E;
+  height: 110px;
+  position: relative;
+  color: #3F72AF;
+}
+
+.book a {
+  color: #112D4E;
+  font-weight: bold;
+}
+
+.book a:hover {
+  color: #112D4E;
+  text-decoration: underline;
+}
+
+.book .cover {
+  float: left;
+  margin: 5px 0 0 5px;
+  width: auto !important; /* keep ratio of image */
+  height: 100px !important;
+  max-width: 100px;
+}
+
+.book .title {
+  position: absolute;
+  left: 120px;
+  top: 15px;
+}
+
+.book .author {
+  position: absolute;
+  left: 120px;
+  top: 55px;
+}
+.book .price, .book .category {
+  position: absolute;
+  left: 120px;
+  top: 80px;
+}
+.book .rating {
+  position: absolute;
+  top: 80px;
+  right: 10px;
+  color: #3F72AF;
+  font-weight: bold;
+}
+
+#displayed-data {
+  margin-top: 50px;
+  text-align: center;
+}
+
+#nav {
+  margin: 30px;
+  text-align: center;
+}
+
+#nav a {
+  font-size: 14px;
+  margin: 5px;
+}
+
+#nav .selected {
+  color: #112D4E;
+  font-size: 16px;
+  margin: 5px;
+}
+
+
+
+/**
+* BOOK DETAILS
+*/
+
+#book_details #cover {
+  float: left;
+  width: 330px !important;
+  height: auto !important; /* keep ratio of image */
+  max-height: 1000px;
+  margin-left:15px;
+}
+
+#book_details #book_data {
+  margin-left:365px;
+  font-size: 17px;
+}
+
+#book_details a.hov:hover {
+  color: #3F72AF;
+}
+
+/* 5-stars rating system */
+/* Modified from: https://github.com/mukulkant/Star-rating-using-pure-css */
+.rate {
+    float: left;
+    height: 30px;
+    padding: 0;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label a {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:30px;
+    color:#ccc;
+}
+.rate > input:checked ~ label a {
+    color: #ffc700;
+}
+.rate:not(:checked) > label a:hover,
+.rate:not(:checked) > label:hover ~ label a {
+    color: #deb217;
+}
+.rate > input:checked + label a:hover,
+.rate > input:checked + label a:hover ~ label a,
+.rate > input:checked ~ label a:hover,
+.rate > input:checked ~ label a:hover ~ label a,
+.rate > label a:hover ~ input:checked ~ label a {
+  color: #c59b08;
+}
+
+#actions {
+  text-align: center;
+  margin-top: 40px;
+}
+
+#actions a {
+  margin: 0 10px 0 10px;
+  border-left: 1px solid #112D4E;
+  border-right: 1px solid #112D4E;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+#actions a:hover {
+  color: #3F72AF;
+  border-color: #3F72AF;
+}
+
+#reviews {
+  border-top: 1px solid #112D4E;
+  margin-top: 40px;
+}
+
+.review {
+  border-bottom: 1px solid #DBE2EF;
+  padding: 15px;
+}
+
+#buy_btn {
+  font-weight: bold;
+  color: #112D4E;
+}

@@ -1,0 +1,121 @@
+{% extends "library/base.html" %}
+
+
+{% block title %}{{ usr.username }}'s profile{% endblock %}
+
+{% block content %}
+
+
+
+<h2 id="page-title">{{ usr.username }}'s profile</h2>
+
+
+<div id="data_content">
+  {% if usr.privacy_level == 0 or usr.privacy_level == 1 and user.is_authenticated or usr.privacy_level == 2 and user.authorization_level == 4 %}
+    {% if own_profile %}
+      <p>
+        <a href="{% url 'library:update_profile' user=user.username %}">Update your profile</a>
+      </p>
+      <p>
+        {% if usr.authorization_level == 0 %}
+          You have been blocked. You cannot post content anymore.
+        {% endif %}
+        {% if usr.authorization_level == 1 %}
+          <a href="{% url 'library:request_publisher' user=usr.username %}">I want to be able to publish books.</a>
+        {% endif %}
+        {% if usr.authorization_level == 2 %}
+          You have sent a request to become a publisher.
+        {% endif %}
+        {% if usr.authorization_level == 3 %}
+          You are a publisher.
+        {% endif %}
+        {% if usr.authorization_level == 4 %}
+          You are a moderator.
+        {% endif %}
+      </p><br>
+    {% else %}
+      {% if user.authorization_level == 4 %}
+        <p>
+          <p>
+            {% if usr.authorization_level == 0 %}
+              This user has been blocked. <a href="{% url 'library:unblock_user' user=usr.username %}">Unblock them.</a>
+            {% else %}
+              <a href="{% url 'library:block_user' user=usr.username %}">Block this user</a>
+            {% endif %}
+          </p>
+          {% if usr.authorization_level == 2 %}
+            This user sent a request to become a publisher.
+            <a href="{% url 'library:accept_publisher_request' user=usr.username %}">Accept it</a>
+            or <a href="{% url 'library:reject_publisher_request' user=usr.username %}">reject it</a>.
+          {% endif %}
+          {% if usr.authorization_level == 3 %}
+            This user is a publisher.
+          {% endif %}
+          {% if usr.authorization_level == 4 %}
+            This user is a moderator.
+          {% endif %}
+        </p><br>
+      {% endif %}
+    {% endif %}
+
+    {% if friend_status == 1 %}
+      <p>You are friend with this user.</p><br>
+    {% endif %}
+    {% if friend_status == 2 %}
+      <p>You have sent a friend request to this user.</p><br>
+    {% endif %}
+    {% if friend_status == 3 %}
+      <p>This user has sent you a friend request.
+        <a href="{% url 'library:accept_friend_request' user=usr.username %}">Accept it</a>
+        or <a href="{% url 'library:reject_friend_request' user=usr.username %}">reject it</a>.</p><br>
+    {% endif %}
+    {% if friend_status == 4 %}
+      <p><a href="{% url 'library:send_friend_request' user=usr.username %}">Send a friend request</a></p><br>
+    {% endif %}
+
+    <p><span class="emph">Name:</span> {{ usr.first_name }} {{ usr.last_name }}</p>
+    <p><span class="emph">Email:</span> {{ usr.email }}</p>
+    <p><span class="emph">Date of birth:</span> {{ usr.birthday }}</p>
+    {% if own_profile %}
+      <p><span class="emph">Address:</span> {{ usr.address }}</p>
+      <p><span class="emph">Balance:</span> ${{ usr.balance }} <a href="{% url 'library:incr_balance' user=usr.username %}">[+]</a></p>
+
+      <br>
+      <p><a href="{% url 'library:user_books' user=usr.username %}">Your books</a></p>
+
+      {% if usr.authorization_level >= 3 %}
+        <p><a href="{% url 'library:user_published_books' user=usr.username %}">Your published books</a>
+          | <a href="{% url 'library:publish_book' user=usr.username %}">Publish a book</a></p>
+        <p>
+      {% endif %}
+        <p>
+          <a href="{% url 'library:user_recommendations' user=user.username %}">Your book recommendations</a>
+          {% if nb_recommendations > 0 %}
+            ({{ nb_recommendations }} recommendation{% if nb_recommendations > 1 %}s{% endif %})
+          {% endif %}
+        </p>
+        <p>
+          <a href="{% url 'library:user_friends' user=user.username %}">Your friends</a>
+          {% if nb_friend_requests > 0 %}
+            ({{ nb_friend_requests }} pending friend request{% if nb_friend_requests > 1 %}s{% endif %})
+          {% endif %}
+        </p>
+      </p>
+      {% if user.authorization_level == 4 %}
+      <br>
+      <p>
+        <p><a href="{% url 'library:publisher_requests' %}">Publisher requests</a> ({{ nb_publisher_req }} pending)</p>
+        <p><a href="{% url 'library:publication_requests' %}">Book publication requests</a> ({{ nb_publication_req }} pending)</p>
+        <p><a href="{% url 'library:review_reports' %}">Reported reviews</a> ({{ nb_reports }} pending)</p>
+      </p>
+      {% endif %}
+    {% else %}
+      <br><p><a href="{% url 'library:user_books' user=usr.username %}">Their books</a></p>
+      <p><a href="{% url 'library:user_published_books' user=usr.username %}">Their published books</a></p>
+    {% endif %}
+  {% else %}
+    <p>You don't have permission to access this page.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

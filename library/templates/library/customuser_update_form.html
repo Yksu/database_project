@@ -1,0 +1,18 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+
+
+<h2 id="page-title">Edit your profile</h2>
+
+
+<div id="data_content">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update</button>
+  </form>
+</div>
+{% endblock %}

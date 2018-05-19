@@ -1,0 +1,45 @@
+{% extends "library/base.html" %}
+
+
+{% block title %}Your friends{% endblock %}
+
+{% block content %}
+
+
+
+<h2 id="page-title">Your friends</h2>
+
+
+
+<div id="data_content">
+
+  {% if requests %}
+    {% for usr in requests %}
+        <p>
+          <a href="{% url 'library:profile' user=usr.username %}">{{ usr.username }}</a> sent you a friend request.
+          <a href="{% url 'library:accept_friend_request' user=usr.username %}">Accept it</a>
+          or <a href="{% url 'library:reject_friend_request' user=usr.username %}">reject it</a>.</p><br>
+
+        </p>
+    {% endfor %}
+  {% endif %}
+
+  <hr>
+
+  <h2>You have {{ nb_friends }} friend{% if nb_friends > 1 %}s{% endif %}</h2>
+
+  {% if friends %}
+    {% for usr in friends %}
+      <p>
+        <a href="{% url 'library:profile' user=usr.username %}">{{ usr.username }}</a>
+        - <a href="{% url 'library:delete_friend' user=usr.username %}">Delete friend</a>
+      </p>
+    {% endfor %}
+    </ul>
+  {% else %}
+      <p>No friends to show.</p>
+  {% endif %}
+
+</div>
+
+{% endblock %}

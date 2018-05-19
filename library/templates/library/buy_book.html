@@ -1,0 +1,36 @@
+{% extends "library/base.html" %}
+
+
+{% block title %}
+Buying a book
+{% endblock %}
+{% block content %}
+
+
+{% if bought %}
+<h2 id="page-title">Confirmation</h2>
+{% else %}
+<h2 id="page-title">Error</h2>
+{% endif %}
+
+
+
+<div id="data_content">
+  {% if status == 2 %}
+    <p>Are you sure that you want to buy {{ book.title }} for ${{ book.price }} ?</p>
+    <form action="{% url 'library:buy_book' bookid=book.pk %}" method="post">
+      {% csrf_token %}
+      <input id="buy_btn" type="submit" value="Buy">
+    </form>
+  {% else %}
+    {% if status == 0 %}
+      <p>There isn't enough money on your account to purchase this book.</p>
+    {% else %}
+      <p>You already own this book.</p>
+    {% endif %}
+  {% endif %}
+
+  <p><a href="{% url 'library:bookdetails' bookid=book.pk %}">Go back to the library</a></p>
+</div>
+
+{% endblock %}

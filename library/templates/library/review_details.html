@@ -1,0 +1,44 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Review by {{ review.associated_rating.user }}{% endblock %}
+
+{% block content %}
+
+
+<h2 id="page-title">Review by {{ review.associated_rating.user }}</h2>
+
+
+<div id="data_content">
+  <p><a href="{% url 'library:bookdetails' bookid=bookid %}">Go back to the book</a></p>
+  Review by
+  <a href="{% url 'library:profile' user=review.associated_rating.user.username %}">{{ review.associated_rating.user.username }}</a>
+  posted on {{ review.date }}<br>
+  Evaluation: {{ review.associated_rating.evaluation }}/5
+  <p style="float:right">
+    <a href="{% url 'library:vote_review' reviewid=review.pk bookid=review.associated_rating.book.pk vote='up' %}"><span style="color:green">{{ review.nb_likes }}&#128077;</span></a> |
+    <a href="{% url 'library:vote_review' reviewid=review.pk bookid=review.associated_rating.book.pk vote='down' %}"><span style="color:red">{{ review.nb_dislikes }}&#128078;</span></a> |
+    <span style="color:blue">{{ review.comment_set.count }}	&#128172;</span>
+  </p>
+  <h3 style="clear:both">{{ review.summary }}</h3>
+  <p>{{ review.content }}</p>
+  <p style="float:right">
+    <a href="{% url 'library:comment_review' bookid=bookid reviewid=review.pk %}">Comment</a> |
+    {% if user.authorization_level == 4 or review.associated_rating.user == user %}
+      <a href="{% url 'library:delete_review' bookid=bookid reviewid=review.pk %}">Delete review</a>
+    {% else %}
+      <a href="{% url 'library:report_review' bookid=bookid reviewid=review.pk %}">Report review</a>
+    {% endif %}
+  </p>
+  <p style="clear:both"></p>
+  <hr>
+  <h2>{{ review.comment_set.count }} comments</h2>
+  {% for c in review.comment_set.all %}
+    <p>
+      by
+      <a href="{% url 'library:profile' user=review.associated_rating.user.username %}">{{ c.parent_review.associated_rating.user.username }}</a>
+      on {{ c.date }}<br>
+      <p style="margin-left:10px">{{ c.content }}</p>
+    </p>
+  {% endfor %}
+</div>
+{% endblock %}

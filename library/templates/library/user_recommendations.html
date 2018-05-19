@@ -1,0 +1,47 @@
+{% extends "library/base.html" %}
+
+
+{% block title %}Book recommendations{% endblock %}
+
+{% block content %}
+
+
+
+<h2 id="page-title">Your book recommendations</h2>
+
+
+
+<div id="data_content">
+
+  {% if recommendations %}
+    <ul id="books">
+    {% for r in recommendations %}
+        <li>
+          <div class="book">
+            <a href="{% url 'library:bookdetails' bookid=r.book.pk %}">
+              <img class="cover" src="{{ r.book.image_url }}" alt="Cover of {{ r.book.title }}"/>
+            </a>
+            <span class="title"><a href="{% url 'library:bookdetails' bookid=r.book.pk %}">{{ r.book.title }}</a></span>
+            {% if book.author.username %}
+              <span class="author"><a href="{% url 'library:profile' user=book.author.username %}">{{ book.author_pseudonym }}</a></span>
+            {% else %}
+              <span class="author">{{ book.author_pseudonym }}</span>
+            {% endif %}            <span class="category">{{ r.book.category }}</span>
+            <span style="right:0" class="rating">
+              Recommended by <a href="{% url 'library:profile' user=r.sender.username %}">{{ r.sender }}</a>
+            </span>
+          </div>
+          <div style="clear:both;"></div>
+        </li>
+    {% endfor %}
+    </ul>
+    <div style="clear:both"></div>
+
+  {% else %}
+      <p>No recommendations to show.</p>
+  {% endif %}
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'library/base.html' %}
+
+
+{% block title %}Log In{% endblock %}
+
+{% block content %}
+
+
+<h2 id="page-title">Log In</h2>
+
+<div id="data_content">
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+</div>
+{% endblock %}
